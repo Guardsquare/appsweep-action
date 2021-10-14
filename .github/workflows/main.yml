@@ -1,6 +1,6 @@
 # This workflow will initiate a Guardsquare AppSweep scan of your APK
 name: AppSweep mobile application security testing
-on: [workflow_dispatch]
+on: [workflow_dispatch] # can be modified to run on push
 jobs:
   appsweep-scan:
     runs-on: ubuntu-latest
@@ -12,4 +12,4 @@ jobs:
       - uses: guardsquare/appsweep-action@master
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
-          INPUT_FILE: InsecureBankv2.apk
+          INPUT_FILE: InsecureBankv2.apk # APK used for testing
