@@ -1,0 +1,25 @@
+name: "AppSweep Mobile Application Security Testing"
+description: "Scan your application using Guardsquare's AppSweep service, signup at http://guardsquare.com/appsweep-mobile-application-security-testing"
+author: "Guardsquare"
+inputs:
+  APPSWEEP_API_KEY:
+    description: "Your AppSweep API Key, should be stored as a GitHub Secret, do not hardcode your API key in your workflow"
+    required: true
+  INPUT_FILE:
+    description: "Path to your APK file to upload and scan"
+    required: true
+  MAPPING_FILE:
+    description: "The obfuscation mapping file of the build"
+    required: false
+  LIBRARY_FILE:
+    description: "The library mapping file of the build"
+    required: false
+  COMMIT_HASH:
+    description: "The commit hash for this build"
+    required: false
+  TAGS:
+    description: "The tags to append to the build"
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
