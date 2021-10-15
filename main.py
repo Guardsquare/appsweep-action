@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-# As this is a 3rd party dependency, it is good practise to specify it in a
-# `requirements.txt` file with a fixed version.
 import requests
 import sys
 
@@ -49,22 +47,19 @@ def upload_file(path):
             raise Exception('failed to upload file')
     return signed_url_info['fileId']
 
-
-# Seems to me that some of these params can be optional, I would document this
-# or use type hints.
 def upload_build(
-    input_file_id,
-    mapping_file_id,
-    library_file_id,
-    commit_hash,
-    tags, # You're shadowing global variables here, use different names.
+    input_file_id, # required
+    mapping_file_id, # optional
+    library_file_id, # optional
+    build_commit_hash, #optional
+    build_tags, # optional
     ):
     new_build_request = {
         'inputFileId': input_file_id,
         'mappingFileId': mapping_file_id,
         'libraryFileId': library_file_id,
-        'commitHash': commit_hash,
-        'tags': tags,
+        'commitHash': build_commit_hash,
+        'tags': build_tags,
         'source': 'api'
     }
     resp = requests.post('{}/api/v0/builds'.format(url), json=new_build_request, headers=HEADERS)
