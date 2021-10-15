@@ -64,8 +64,7 @@ def upload_build(
     }
     resp = requests.post('{}/api/v0/builds'.format(url), json=new_build_request, headers=HEADERS)
     if resp.status_code != 200:
-        # Idem.
-        print(resp.text)
+        print(resp.text + ' ' + resp.status_code)
         raise Exception('failed to create build')
 
     build_url = resp.json()['details']['buildUrl']
