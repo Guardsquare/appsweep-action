@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-
 import os
-# As this is a 3rd party dependency, it is good practise to specify it in a
-# `requirements.txt` file with a fixed version.
 import requests
 import sys
 
@@ -26,15 +22,10 @@ HEADERS = {
 }
 
 def upload_file(path):
-    # General rule is to use `is None` instead of `== None` as the latter can be
-    # overriden to return something unexpected or throw exceptions.
-    if path is None:
-        # IMO, it is cleaner to handle this in the caller, this makes it a bit
-        # implicit that `upload_build`'s arguments can be optional.
+    if path == None:
         return None
 
-    # `filename` is unused`?
-    #filename = os.path.basename(path)
+    filename = os.path.basename(path)
     signed_url_request = {
         'name': os.path.basename(path),
         'size': os.path.getsize(path),
@@ -42,29 +33,24 @@ def upload_file(path):
     }
     resp = requests.post('{}/api/v0/files/signed-url'.format(url), json=signed_url_request, headers=HEADERS)
     if resp.status_code != 200:
-        # Put `resp.text` in the exception message somehow.
-        # Does it also include the status code? If not, include it also.
         print(resp.text)
         raise Exception('failed to get signed url')
-
+    
     signed_url_info = resp.json()
     with open(path, 'rb') as data:
         resp = requests.put(signed_url_info['url'], data=data, headers={'Content-Type': 'application/octet-stream'})
         if resp.status_code != 200:
-            # Idem.
             print(resp.text)
             raise Exception('failed to upload file')
     return signed_url_info['fileId']
 
 
-# Seems to me that some of these params can be optional, I would document this
-# or use type hints.
 def upload_build(
     input_file_id,
     mapping_file_id,
     library_file_id,
     commit_hash,
-    tags, # You're shadowing global variables here, use different names.
+    tags,
     ):
     new_build_request = {
         'inputFileId': input_file_id,
@@ -76,7 +62,6 @@ def upload_build(
     }
     resp = requests.post('{}/api/v0/builds'.format(url), json=new_build_request, headers=HEADERS)
     if resp.status_code != 200:
-        # Idem.
         print(resp.text)
         raise Exception('failed to create build')
 
