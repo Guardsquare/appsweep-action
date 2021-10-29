@@ -5,11 +5,11 @@ jobs:
   appsweep-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
         with:
           repository: ''
         
-      - uses: guardsquare/appsweep-action@master
+      - uses: guardsquare/appsweep-action@main
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
           INPUT_FILE: InsecureBankv2.apk # APK used for testing
