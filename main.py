@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import os
 import requests
 import sys
@@ -28,7 +26,8 @@ def upload_file(path):
         # IMO, it is cleaner to handle this in the caller, this makes it a bit
         # implicit that `upload_build`'s arguments can be optional.
         return None
-    
+
+    filename = os.path.basename(path)
     signed_url_request = {
         'name': os.path.basename(path),
         'size': os.path.getsize(path),
@@ -38,7 +37,7 @@ def upload_file(path):
     if resp.status_code != 200:
         print(resp.text + ' ' + resp.status_code)
         raise Exception('failed to get signed url')
-
+    
     signed_url_info = resp.json()
     with open(path, 'rb') as data:
         resp = requests.put(signed_url_info['url'], data=data, headers={'Content-Type': 'application/octet-stream'})

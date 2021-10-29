@@ -1,5 +1,5 @@
 name: "AppSweep Mobile Application Security Testing"
-description: "Scan your application using Guardsquare's AppSweep service, signup at http://guardsquare.com/appsweep-mobile-application-security-testing"
+description: "Scan your app using AppSweep by Guardsquare, signup at http://guardsquare.com/appsweep-mobile-application-security-testing"
 author: "Guardsquare"
 inputs:
   APPSWEEP_API_KEY:

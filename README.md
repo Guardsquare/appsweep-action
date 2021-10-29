@@ -29,7 +29,7 @@ jobs:
         with:
           repository: ''
 
-      - uses: guardsquare/appsweep-action@master
+      - uses: guardsquare/appsweep-action@main
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
           INPUT_FILE: InsecureBankv2.apk
@@ -65,7 +65,7 @@ jobs:
         with:
           repository: ''
 
-      - uses: guardsquare/appsweep-action@master
+      - uses: guardsquare/appsweep-action@main
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
           INPUT_FILE: InsecureBankv2.apk
