@@ -22,7 +22,9 @@ HEADERS = {
 }
 
 def upload_file(path):
-    if path == None:
+    if path is None:
+        # IMO, it is cleaner to handle this in the caller, this makes it a bit
+        # implicit that `upload_build`'s arguments can be optional.
         return None
 
     filename = os.path.basename(path)
@@ -33,42 +35,39 @@ def upload_file(path):
     }
     resp = requests.post('{}/api/v0/files/signed-url'.format(url), json=signed_url_request, headers=HEADERS)
     if resp.status_code != 200:
-        print(resp.text)
+        print(resp.text + ' ' + resp.status_code)
         raise Exception('failed to get signed url')
     
     signed_url_info = resp.json()
     with open(path, 'rb') as data:
         resp = requests.put(signed_url_info['url'], data=data, headers={'Content-Type': 'application/octet-stream'})
         if resp.status_code != 200:
-            print(resp.text)
+            print(resp.text + ' ' + resp.status_code)
             raise Exception('failed to upload file')
     return signed_url_info['fileId']
 
-
 def upload_build(
-    input_file_id,
-    mapping_file_id,
-    library_file_id,
-    commit_hash,
-    tags,
+    input_file_id, # required
+    mapping_file_id, # optional
+    library_file_id, # optional
+    build_commit_hash, #optional
+    build_tags, # optional
     ):
     new_build_request = {
         'inputFileId': input_file_id,
         'mappingFileId': mapping_file_id,
         'libraryFileId': library_file_id,
-        'commitHash': commit_hash,
-        'tags': tags,
+        'commitHash': build_commit_hash,
+        'tags': build_tags,
         'source': 'api'
     }
     resp = requests.post('{}/api/v0/builds'.format(url), json=new_build_request, headers=HEADERS)
     if resp.status_code != 200:
-        print(resp.text)
+        print(resp.text + ' ' + resp.status_code)
         raise Exception('failed to create build')
 
     build_url = resp.json()['details']['buildUrl']
     print("Created a new build at: {}".format(build_url))
-
-
 
 if __name__ == "__main__":
     input_file_id = upload_file(inputFile)
