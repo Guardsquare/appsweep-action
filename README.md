@@ -33,6 +33,7 @@ jobs:
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
           INPUT_FILE: InsecureBankv2.apk
+          COMMIT_HASH: ${{ steps.vars.outputs.sha_short }}
 ```
 
 ### Inputs
@@ -43,13 +44,13 @@ jobs:
 | `INPUT_FILE`  | The APK that will be uploaded to AppSweep    |
 | `MAPPING_FILE` _(optional)_  | An optional obfuscation mapping file for the build    |
 | `LIBRARY_FILE` _(optional)_  | An optional library mapping file for the build    |
-| `COMMIT_HASH` _(optional)_  | An optional commit hash of the build    |
+| `COMMIT_HASH` _(recommended)_  | An recommended parameter to track the commit hash of the build    |
 | `TAGS` _(optional)_  | An optional set of tags to append to your build   |
 
 
 ## Examples
 
-### Using the optional input
+### Using all the optional inputs
 
 This is how to use the optional input.
 
