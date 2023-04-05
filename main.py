@@ -8,12 +8,12 @@ url = "https://appsweep.guardsquare.com"
 apiKey = os.environ["APPSWEEP_API_KEY"]
 # Path to your APK file to upload and scan
 inputFile = os.environ["INPUT_FILE"]
+# The commit hash to use for the build
+commit_hash = os.environ["COMMIT_HASH"]
 # The obfuscation mapping file of the build [Optional]
 mappingFile = os.environ.get('MAPPING_FILE', None)
 # The library mapping file of the build [Optional]
 libraryFile = os.environ.get('LIBRARY_FILE', None)
-# The commit has to use for the build [Optional]
-commit_hash = os.environ.get('COMMIT_HASH', None)
 # The tags to append to the build [Optional]
 tags = os.environ.get('TAGS', None)
 
@@ -37,7 +37,7 @@ def upload_file(path):
     if resp.status_code != 200:
         print(resp.text + ' ' + resp.status_code)
         raise Exception('failed to get signed url')
-    
+
     signed_url_info = resp.json()
     with open(path, 'rb') as data:
         resp = requests.put(signed_url_info['url'], data=data, headers={'Content-Type': 'application/octet-stream'})
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     input_file_id = upload_file(inputFile)
     mapping_file_id = upload_file(mappingFile)
     library_file_id = upload_file(libraryFile)
-    
+
     upload_build(
         input_file_id,
         mapping_file_id,
