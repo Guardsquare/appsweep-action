@@ -18,7 +18,7 @@ libraryFile = os.environ.get('LIBRARY_FILE', None)
 tags = os.environ.get('TAGS', None)
 
 HEADERS = {
-    'Authorization': 'Bearer {}'.format(apiKey),
+    'Authorization': f'Bearer {apiKey}',
 }
 
 def upload_file(path):
@@ -33,16 +33,16 @@ def upload_file(path):
         'size': os.path.getsize(path),
         'type': 'application/octet-stream'
     }
-    resp = requests.post('{}/api/v0/files/signed-url'.format(url), json=signed_url_request, headers=HEADERS)
+    resp = requests.post(f"{url}/api/v0/files/signed-url", json=signed_url_request, headers=HEADERS)
     if resp.status_code != 200:
-        print(resp.text + ' ' + resp.status_code)
+        print(f"{resp.text} {resp.status_code}")
         raise Exception('failed to get signed url')
 
     signed_url_info = resp.json()
     with open(path, 'rb') as data:
         resp = requests.put(signed_url_info['url'], data=data, headers={'Content-Type': 'application/octet-stream'})
         if resp.status_code != 200:
-            print(resp.text + ' ' + resp.status_code)
+            print(f"{resp.text} {resp.status_code}")
             raise Exception('failed to upload file')
     return signed_url_info['fileId']
 
@@ -61,13 +61,13 @@ def upload_build(
         'tags': build_tags,
         'source': 'api'
     }
-    resp = requests.post('{}/api/v0/builds'.format(url), json=new_build_request, headers=HEADERS)
+    resp = requests.post(f"{url}/api/v0/builds", json=new_build_request, headers=HEADERS)
     if resp.status_code != 200:
-        print(resp.text + ' ' + resp.status_code)
+        print(f"{resp.text} {resp.status_code}")
         raise Exception('failed to create build')
 
     build_url = resp.json()['details']['buildUrl']
-    print("Created a new build at: {}".format(build_url))
+    print(f"Created a new build at: {build_url}")
 
 if __name__ == "__main__":
     input_file_id = upload_file(inputFile)
