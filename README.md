@@ -51,7 +51,7 @@ jobs:
 
 ### Using all the optional inputs
 
-This is how to use the optional input.
+This is how to use the optional input:
 
 ```yaml
 # This workflow will initiate a Guardsquare AppSweep scan of your APK
@@ -77,9 +77,9 @@ jobs:
 
 ### Using AppSweep Gradle Plugin in GitHub actions
 
-In case you use AppSweep Gradle plugin there is no need to provide, `TAGS`, `Library_FILE`, 
+In case you use the AppSweep Gradle plugin there is no need to provide `TAGS`, `LIBRARY_FILE`, 
 `MAPPING_FILE`, and `COMMIT_HASH` as they will be computed automatically. This is how to use the 
-AppSweep Gradle plugin in GitHub actions.
+AppSweep Gradle plugin in GitHub actions:
 
 ```yaml
 # This workflow will initiate a Guardsquare AppSweep scan of your APK
