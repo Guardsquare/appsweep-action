@@ -30,10 +30,10 @@ jobs:
           repository: ''
 
       - uses: guardsquare/appsweep-action@main
-        env:
-          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
-          INPUT_FILE: InsecureBankv2.apk
-          COMMIT_HASH: ${{ steps.vars.outputs.sha_short }}
+        with:
+          appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
+          input_file: InsecureBankv2.apk
+          commit_hash: ${{ github.sha }}
 ```
 
 ### Inputs
@@ -66,13 +66,13 @@ jobs:
           repository: ''
 
       - uses: guardsquare/appsweep-action@main
-        env:
-          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
-          INPUT_FILE: InsecureBankv2.apk
-          MAPPING_FILE: mapping.txt
-          LIBRARY_FILE:
-          COMMIT_HASH: ${{ steps.vars.outputs.sha_short }}
-          TAGS: release
+        with:
+          appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
+          input_file: InsecureBankv2.apk
+          mapping_file: mapping.txt
+          library_file:
+          commit_hash: ${{ github.sha }}
+          tags: release
 ```
 
 ### Using AppSweep Gradle Plugin in GitHub actions
@@ -99,7 +99,7 @@ jobs:
           java-version: '17'
 
       - name: upload with gradle
-        env:
-          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
+        with:
+          appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
         run: ./gradlew uploadToAppSweepDebug  # You can change the task name in here.
 ```
