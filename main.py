@@ -5,7 +5,7 @@ import requests
 
 
 def upload_file(path, url, headers):
-    if path is None:
+    if path is None or path == "":
         # IMO, it is cleaner to handle this in the caller, this makes it a bit
         # implicit that `upload_build`'s arguments can be optional.
         return None
@@ -79,19 +79,19 @@ def upload_build(
 
 def main():
     # default URL for AppSweep
-    url = "https://appsweep.guardsquare.com"
+    url = os.environ["INPUT_URL"]
     # Your AppSweep Project API key (stored as a SECRET)
-    api_key = os.environ["APPSWEEP_API_KEY"]
+    api_key = os.environ["INPUT_APPSWEEP_API_KEY"]
     # Path to your APK file to upload and scan
-    input_file = os.environ["INPUT_FILE"]
+    input_file = os.environ["INPUT_INPUT_FILE"]
     # The commit hash to use for the build
-    commit_hash = os.environ["COMMIT_HASH"]
+    commit_hash = os.environ["INPUT_COMMIT_HASH"]
     # The obfuscation mapping file of the build [Optional]
-    mapping_file = os.environ.get("MAPPING_FILE", None)
+    mapping_file = os.environ.get("INPUT_MAPPING_FILE")
     # The library mapping file of the build [Optional]
-    library_file = os.environ.get("LIBRARY_FILE", None)
+    library_file = os.environ.get("INPUT_LIBRARY_FILE")
     # The tags to append to the build [Optional]
-    tags = os.environ.get("TAGS", None)
+    tags = os.environ.get("INPUT_TAGS")
 
     if tags is not None:
         tags = tags.strip("[]").split(",")
