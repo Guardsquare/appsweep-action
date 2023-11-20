@@ -99,7 +99,7 @@ jobs:
           java-version: '17'
 
       - name: upload with gradle
-        with:
+        env:
           appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
         run: ./gradlew uploadToAppSweepDebug  # You can change the task name in here.
 ```
