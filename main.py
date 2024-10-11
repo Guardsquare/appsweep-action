@@ -79,11 +79,11 @@ def upload_build(
 
 def main():
     # default URL for AppSweep
-    url = os.environ["input_url"]
+    url = os.environ["INPUT_URL"]
     # Your AppSweep Project API key (stored as a SECRET)
-    api_key = os.environ["input_appsweep_api_key"]
+    api_key = os.environ["INPUT_APPSWEEP_API_KEY"]
     # Path to your APK file to upload and scan
-    input_file = os.environ["input_input_file"]
+    input_file = os.environ["INPUT_INPUT_FILE"]
     # The commit hash to use for the build
     commit_hash = os.environ["input_commit_hash"]
     # The obfuscation mapping file of the build [Optional]
