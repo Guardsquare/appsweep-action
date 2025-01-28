@@ -22,7 +22,7 @@ This action can be used to automate scanning your Android application using a Gi
 name: AppSweep mobile application security testing
 on: [push]
 jobs:
-  upload-app-to-appsweep:
+  appsweep-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -34,9 +34,9 @@ jobs:
       - name: Upload debug app to AS
         uses: guardsquare/appsweep-action@main
         with:
-            appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
-            input_file: ./app/build/outputs/apk/debug/app-debug.apk
-            mapping_file: ./app/build/outputs/mapping/debug/mapping.txt
+          appsweep_api_key: ${{ secrets.APPSWEEP_API_KEY }}
+          input_file: ./app/build/outputs/apk/debug/app-debug.apk
+          mapping_file: ./app/build/outputs/mapping/debug/mapping.txt
 ```
 
 ### Inputs
