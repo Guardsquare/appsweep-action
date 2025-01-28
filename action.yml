@@ -8,25 +8,48 @@ inputs:
   input_file:
     description: "Path to your APK file to upload and scan"
     required: true
-  commit_hash:
-    description: "The commit hash for this build"
-    required: true
   mapping_file:
     description: "The obfuscation mapping file of the build"
     required: false
     default: ""
-  library_file:
-    description: "The library mapping file of the build"
+  tag:
+    description: "The tags to append to the build (format: tag1,tag2)"
     required: false
     default: ""
-  tags:
-    description: "The tags to append to the build"
-    required: false
-    default: "[]"
-  url:
-    description: "Base AppSweep URL"
-    required: false
-    default: "https://appsweep.guardsquare.com"
+outputs:
+  build_id: 
+    description: "The build ID of the uploaded scan"
+    value: ${{ steps.upload.outputs.build_id }}
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "composite"
+  steps:
+    - name: Install CLI
+      shell: bash
+      run: curl -fsSL https://platform.guardsquare.com/cli/install.sh | sh -s -- --yes
+      
+    - name: Upload app for scanning
+      id: upload
+      shell: bash
+      env:
+        APPSWEEP_API_KEY: ${{ inputs.appsweep_api_key }}
+      run: |
+        if [ ! -f ${{ inputs.input_file }} ]; then
+            echo "App file ${{ inputs.input_file }} not found!"
+            exit 1
+        fi
+        if [ -n "${{ inputs.tag }}" ]; then
+          echo "Using tags ${{ inputs.tag }}"
+          TAG_ARG="--tag ${{ inputs.tag }}"
+        else
+          TAG_ARG=""
+        fi
+        if [ -n "${{ inputs.mapping_file }}" ]; then
+          echo "Using mapping file ${{ inputs.mapping_file }}"
+          MAPPING_FILE_ARG="--mapping-file ${{ inputs.mapping_file }}"
+        else
+          MAPPING_FILE_ARG=""
+        fi
+        echo "Uploading ${{ inputs.input_file }}"
+        BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} $TAG_ARG $MAPPING_FILE_ARG --format json | jq -r ".id")
+        echo "Build details available at: https://appsweep.guardsquare.com/builds/$BUILD_ID"
+        echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
