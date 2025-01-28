@@ -13,7 +13,9 @@
 
 ## Usage
 
-This action can be used to automate scanning your Android application using a GitHub action
+This action can be used to automate scanning your Android application using a GitHub action.
+
+** Make sure to build the app before calling the step! **
 
 ### Example workflow
 
