@@ -25,7 +25,7 @@ runs:
   steps:
     - name: Install CLI
       shell: bash
-      run: curl -fsSL https://platform.guardsquare.com/cli/install.sh | sh -s -- --yes
+      run: curl --retry 3 --retry-max-time 120 --retry-all-errors -sS https://platform.guardsquare.com/cli/install.sh | sh -s -- --yes
       
     - name: Upload app for scanning
       id: upload
