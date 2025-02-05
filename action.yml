@@ -41,12 +41,6 @@ runs:
             echo "App file ${{ inputs.input_file }} not found!"
             exit 1
         fi
-        if [ -n "${{ inputs.tag }}" ]; then
-          echo "Using tags ${{ inputs.tag }}"
-          TAG_ARG="--tag '${{ inputs.tag }}'"
-        else
-          TAG_ARG=""
-        fi
         if [ -n "${{ inputs.mapping_file }}" ]; then
           echo "Using mapping file ${{ inputs.mapping_file }}"
           MAPPING_FILE_ARG="--mapping-file ${{ inputs.mapping_file }}"
@@ -57,7 +51,13 @@ runs:
           export APPSWEEP_HOST="${{ inputs.appsweep_host }}"
         fi
         echo "Uploading ${{ inputs.input_file }}"
-        BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} $TAG_ARG $MAPPING_FILE_ARG --format '{{.ID}}')
+
+        if [ -n "${{ inputs.tag }}" ]; then
+          echo "Using tags ${{ inputs.tag }}"
+          BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} --tag "${{ inputs.tag }}" $MAPPING_FILE_ARG --format '{{.ID}}')
+        else
+          BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} $MAPPING_FILE_ARG --format '{{.ID}}')
+        fi
 
         echo "Build details available at: https://appsweep.guardsquare.com/builds/$BUILD_ID"
         echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
