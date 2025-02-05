@@ -16,6 +16,10 @@ inputs:
     description: "The tags to append to the build (format: tag1,tag2)"
     required: false
     default: ""
+  appsweep_host:
+    description: "Host URL of AppSweep"
+    required: false
+    default: ""
 outputs:
   build_id: 
     description: "The build ID of the uploaded scan"
@@ -49,7 +53,11 @@ runs:
         else
           MAPPING_FILE_ARG=""
         fi
+        if [ -n "${{ inputs.appsweep_host }}" ]; then
+          export APPSWEEP_HOST="${{ inputs.appsweep_host }}"
+        fi
         echo "Uploading ${{ inputs.input_file }}"
-        BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} $TAG_ARG $MAPPING_FILE_ARG --format json | jq -r ".id")
+        BUILD_ID=$(guardsquare scan ${{ inputs.input_file }} --commit-hash ${{ github.sha }} $TAG_ARG $MAPPING_FILE_ARG --format '{{.ID}}')
+
         echo "Build details available at: https://appsweep.guardsquare.com/builds/$BUILD_ID"
         echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
