@@ -3,11 +3,11 @@
   <br />
   <a href="https://guardsquare.com/appsweep-mobile-application-security-testing">
     <img
-      src="https://appsweep.guardsquare.com/AppSweep-blue.svg"
-      alt="AppSweep" width="400">
+      src="https://www.guardsquare.com/hubfs/nav-icon_appsweep-3.png"
+      alt="AppSweep" width="30">
+    AppSweep
   </a>
 </p>
-
 
 <h4 align="center">GitHub action for AppSweep Mobile Application Security Testing</h4>
 
@@ -15,7 +15,7 @@
 
 This action can be used to automate scanning your Android application using a GitHub action.
 
-** Make sure to build the app before calling the step! **
+**Make sure to build the app before calling the step!**
 
 To authenticate, the preferred way is to use ssh agent authentication: You need to add a Service account public key to your team. The private key then needs to be added to your Github Secrets (e.g with the name `SSH_PRIVATE_KEY`). To load the ssh key, you can e.g., use https://github.com/webfactory/ssh-agent. The Appsweep action will then automatically use this key to authenticate the scan.
 
